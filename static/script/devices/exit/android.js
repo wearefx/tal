@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  * @fileOverview Requirejs module for android exit strategy.
  * Uses a callback into 'Android' namespace for android WebView (or similar)
