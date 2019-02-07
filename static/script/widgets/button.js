@@ -56,6 +56,10 @@ define(
                     }
                 });
             },
+            getUrlParam: function (name) {
+                var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                return (results && results[1]) || undefined;
+            },
             /**
              * Renders the widget and any child widgets to device-specific output.
              * @param {antie.devices.Device} device The device to render to.
@@ -67,12 +71,14 @@ define(
                 for(var i=0; i<this._childWidgetOrder.length; i++) {
                     device.appendChildElement(this.outputElement, this._childWidgetOrder[i].render(device));
                 }
-                this.outputElement.onmouseover=function(){
-                    self.focus(true);
-                };
-                this.outputElement.onclick=function(){
-                    self.select();
-                };
+                if (this.getUrlParam("enablePointer") === "true") {
+                    this.outputElement.onmouseover = function () {
+                        self.focus(true);
+                    };
+                    this.outputElement.onclick = function () {
+                        self.select();
+                    };
+                }
                 return this.outputElement;
             },
             /**
