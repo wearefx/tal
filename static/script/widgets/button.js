@@ -77,7 +77,9 @@ define(
                     };
                 }
                 this.outputElement.onclick = function () {
-                    self.select();
+                    if (self.isFocussed()) {
+                        self.select();
+                    }
                 };
                 return this.outputElement;
             },
