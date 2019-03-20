@@ -1,7 +1,7 @@
 {
   "name": "@fxdigital/tal",
   "license": "Apache-2.0",
-  "version": "9.4.0",
+  "version": "9.5.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/bbc/tal.git"
