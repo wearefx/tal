@@ -75,10 +75,10 @@ define(
                     this.outputElement.onmouseover = function () {
                         self.focus(true);
                     };
-                    this.outputElement.onclick = function () {
-                        self.select();
-                    };
                 }
+                this.outputElement.onclick = function () {
+                    self.select();
+                };
                 return this.outputElement;
             },
             /**
