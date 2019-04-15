@@ -36,6 +36,17 @@ define(
                 init.base.call(this, config);
                 this._textSizeCache = {};
 
+                var self = this;
+                this._listenKeyEvents = true;
+
+                document.stopTalListening = function() {
+                    self._listenKeyEvents = false;
+                }
+
+                document.startTalListening = function() {
+                    self._listenKeyEvents = true;
+                }
+
                 this.addClassToElement(this.getTopLevelElement(), 'notanimating');
             },
             /**
@@ -316,7 +327,7 @@ define(
                 document.onkeydown = function(e) {
                     e = e || window.event;
                     var _keyCode = _keyMap[e.keyCode.toString()];
-                    if (_keyCode) {
+                    if (_keyCode && self._listenKeyEvents) {
                         if (!_pressed[e.keyCode.toString()]) {
                             self._application.bubbleEvent(new KeyEvent('keydown', _keyCode));
                             _pressed[e.keyCode.toString()] = true;
@@ -329,7 +340,7 @@ define(
                 document.onkeyup = function(e) {
                     e = e || window.event;
                     var _keyCode = _keyMap[e.keyCode.toString()];
-                    if (_keyCode) {
+                    if (_keyCode && self._listenKeyEvents) {
                         delete _pressed[e.keyCode.toString()];
                         self._application.bubbleEvent(new KeyEvent('keyup', _keyCode));
                         e.preventDefault();
@@ -338,7 +349,7 @@ define(
                 document.onkeypress = function(e) {
                     e = e || window.event;
                     var _keyCode = _keyMap[e.keyCode.toString()];
-                    if (_keyCode) {
+                    if (_keyCode && self._listenKeyEvents) {
                         self._application.bubbleEvent(new KeyEvent('keypress', _keyCode));
                         e.preventDefault();
                     }
