@@ -35,17 +35,20 @@ define(
             init: function init (config) {
                 init.base.call(this, config);
                 this._textSizeCache = {};
+                this._pressed = {};
 
                 var self = this;
                 this._listenKeyEvents = true;
 
                 document.stopTalListening = function() {
                     self._listenKeyEvents = false;
-                }
+                    self._pressed = {};
+                };
 
                 document.startTalListening = function() {
+                    self._pressed = {};
                     self._listenKeyEvents = true;
-                }
+                };
 
                 this.addClassToElement(this.getTopLevelElement(), 'notanimating');
             },
@@ -318,7 +321,6 @@ define(
             addKeyEventListener: function addKeyEventListener () {
                 var self = this;
                 var _keyMap = this.getKeyMap();
-                var _pressed = {};
 
                 // We need to normalise these events on so that for every key pressed there's
                 // one keydown event, followed by multiple keypress events whilst the key is
@@ -328,9 +330,9 @@ define(
                     e = e || window.event;
                     var _keyCode = _keyMap[e.keyCode.toString()];
                     if (_keyCode && self._listenKeyEvents) {
-                        if (!_pressed[e.keyCode.toString()]) {
+                        if (!self._pressed[e.keyCode.toString()]) {
                             self._application.bubbleEvent(new KeyEvent('keydown', _keyCode));
-                            _pressed[e.keyCode.toString()] = true;
+                            self._pressed[e.keyCode.toString()] = true;
                         } else {
                             self._application.bubbleEvent(new KeyEvent('keypress', _keyCode));
                         }
@@ -341,7 +343,7 @@ define(
                     e = e || window.event;
                     var _keyCode = _keyMap[e.keyCode.toString()];
                     if (_keyCode && self._listenKeyEvents) {
-                        delete _pressed[e.keyCode.toString()];
+                        delete self._pressed[e.keyCode.toString()];
                         self._application.bubbleEvent(new KeyEvent('keyup', _keyCode));
                         e.preventDefault();
                     }
